@@ -1,0 +1,29 @@
+[
+  {
+    "name": "NewsDigest",
+    "title": "News Digest",
+    "slug": "news-digest",
+    "options": {
+      "sidebar": true,
+      "icon": "icons8-news-100.png"
+    }
+  },
+  {
+    "name": "Todo",
+    "title": "Todo",
+    "slug": "todo",
+    "options": {
+      "sidebar": true,
+      "icon": "icons8-checklist-100.png"
+    }
+  },
+  {
+    "name": "Stocks",
+    "title": "Stocks",
+    "slug": "stocks",
+    "options": {
+      "sidebar": true,
+      "icon": "icons8-money-150.png"
+    }
+  }
+]

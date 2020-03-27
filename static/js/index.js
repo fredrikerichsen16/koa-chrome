@@ -1,6 +1,8 @@
-let $user = Cookies.get('user');
+import storage from 'local-storage';
 
-if (!$user || false) {
+let $user = storage.get('user');
+
+if (!$user) {
     $user = {
         id: 1,
         personal: {
@@ -17,5 +19,5 @@ if (!$user || false) {
         widgets: ['news-digest', 'todo', 'stocks']
     };
 
-    Cookies.set('user', $user);
+    storage.set('user', $user);
 }

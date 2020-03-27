@@ -1,10 +1,14 @@
-import Cookies from 'js-cookie';
+import storage from 'local-storage';
 
 class BackgroundService {
 
     constructor() {
         this.date = new Date();
         this.now = this.date.getTime();
+    }
+
+    get nextShuffleTime() {
+        return 1; // this.now + (1000 * 60 * 2);
     }
 
     /**
@@ -27,16 +31,16 @@ class BackgroundService {
                     .then((data) => {
                         user.backgrounds = {
                             nextRefresh: this.now + (1000 * 60 * 60 * 24), // refresh all saved images with a new API call
-                            nextShuffle: 1, // this.now + (1000 * 60 * 2), // update picture every two minutes
+                            nextShuffle: this.nextShuffleTime,
                             images: data,
                             id: 0,
                             active: data[0],
                         };
 
                         this.user = user;
-                        Cookies.set('user', user);
+                        storage.set('user', user);
 
-                        resolve(this.user.backgrounds.active);
+                        resolve(this.loadHTML(this.user.backgrounds.active));
                     })
                     .catch((error) => {
                         reject(error);
@@ -45,17 +49,23 @@ class BackgroundService {
             else
             {
                 this.shuffle();
-                resolve(this.user.backgrounds.active);
+                resolve(this.loadHTML(this.user.backgrounds.active));
             }
         });
+    }
+
+    loadHTML(BG) {
+        let bg = new Image();
+        bg.src = 'http://localhost:3001/backgrounds/' + BG.name;
+        return bg;
     }
 
     timeToUpdate() {
         let b = this.user.backgrounds;
 
         return !this.user.hasOwnProperty('backgrounds')
-                || b.nextRefresh < this.now
-                || b.nextShuffle < this.now && ((b.images.length - 1) <= b.id);
+            || b.nextRefresh < this.now
+            || b.nextShuffle < this.now && ((b.images.length - 1) <= b.id);
     }
 
     getImagesFromAPI() {
@@ -66,7 +76,6 @@ class BackgroundService {
                 {
                     if (this.status == 200)
                     {
-                        console.log(this);
                         resolve(JSON.parse(this.responseText));
                     } else
                     {
@@ -81,7 +90,12 @@ class BackgroundService {
                     }
                 }
             };
-            xhttp.open('GET', 'http://localhost:3000/api/get-background', true);
+            xhttp.open('GET', 'http://localhost:3001/get-background', true);
+
+            xhttp.withCredentials = true;
+            xhttp.setRequestHeader( 'Access-Control-Allow-Credentials', true);
+            xhttp.setRequestHeader( 'Content-Type', 'application/json' );
+
             xhttp.send();
         });
     }
@@ -92,11 +106,10 @@ class BackgroundService {
         if(b.nextShuffle < this.now) {
             b.id++;
             b.active = b.images[b.id];
-            b.nextShuffle = 1;
-            // b.nextShuffle = this.now + (1000 * 60 * 2); - load a new pic every time during development.
+            b.nextShuffle = this.nextShuffleTime; // - load a new pic every time during development.
         }
 
-        Cookies.set('user', this.user);
+        storage.set('user', this.user);
     }
 }
 

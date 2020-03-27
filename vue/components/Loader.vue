@@ -26,19 +26,15 @@
              * TODO: Pass 'document' into .retrieve and do the bg.onload etc. inside the service.
              */
             BackgroundService.retrieve(this.user)
-                .then((data) => {
-                    let url = '/img/bg/' + data.name;
-
-                    let bg = new Image();
+                .then((bg) => {
                     bg.onload = function() {
-                        document.getElementById('background').style.backgroundImage = `url(${url})`;
+                        document.getElementById('background').style.backgroundImage = `url(${bg.src})`;
                         document.getElementById('overlay').classList.add('hide');
 
                         setTimeout(function() {
                             document.getElementById('overlay').remove();
                         }, 700);
                     };
-                    bg.src = url;
                 })
                 .catch((error) => {
                     console.log(error);

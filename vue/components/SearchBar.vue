@@ -103,6 +103,7 @@ export default {
                id="magic_search_input"
                name="q"
                autofocus="autofocus"
+               autocomplete="new-password"
                v-bind:placeholder="placeholder"
                v-model.trim="queryInput"
                v-debounce:500="search"

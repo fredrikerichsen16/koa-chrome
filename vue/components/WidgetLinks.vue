@@ -15,7 +15,7 @@
       v-for="(route, idx) in $router.options.routes"
       :key="idx"
       :to="route.path">
-        <img :src="'img/icons/' + route.meta.icon"
+        <img :src="'/static/img/icons/' + route.meta.icon"
              :alt="route.meta.name + 'Icon'"
              data-wenk="News Digest"
              data-wenk-pos="right">

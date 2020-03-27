@@ -51,50 +51,50 @@ export default {
             @click="clickItem">
             <div class="icon-wrapper"
                  style="background-color: rgb(237, 104, 129)">
-                <img src="img/icons/search-menu/math.png" alt="Math Icon">
+                <img src="/static/img/icons/search-menu/math.png" alt="Math Icon">
             </div>
             <p>= 400</p>
-            <img src="img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
+            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
         <li v-bind:class="{ highlight: magicSearchPosition === 2 }"
             @mouseover="mouseOverItem(2)"
             @mouseleave="mouseOverItem(0)">
             <div class="icon-wrapper"
                  style="background-color: rgba(100, 118, 243)">
-                <img src="img/icons/search-menu/google.png" alt="Google Icon">
+                <img src="/static/img/icons/search-menu/google.png" alt="Google Icon">
             </div>
             <p>Search Google</p>
-            <img src="img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
+            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
         <li v-bind:class="{ highlight: magicSearchPosition === 3 }"
             @mouseover="mouseOverItem(3)"
             @mouseleave="mouseOverItem(0)">
             <div class="icon-wrapper"
                  style="background-color: rgba(244, 195, 109)">
-                <img src="img/icons/search-menu/maps.png" alt="Google Maps Icon">
+                <img src="/static/img/icons/search-menu/maps.png" alt="Google Maps Icon">
             </div>
             <p>Search Google Maps</p>
-            <img src="img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
+            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
         <li v-bind:class="{ highlight: magicSearchPosition === 4 }"
             @mouseover="mouseOverItem(4)"
             @mouseleave="mouseOverItem(0)">
             <div class="icon-wrapper"
                  style="background-color: rgb(104, 237, 124)">
-                <img src="img/icons/search-menu/currency-conversion.png" alt="Currency Conversion Icon">
+                <img src="/static/img/icons/search-menu/currency-conversion.png" alt="Currency Conversion Icon">
             </div>
             <p>24 EUR = 244 NOK</p>
-            <img src="img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
+            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
         <li v-bind:class="{ highlight: magicSearchPosition === 5 }"
             @mouseover="mouseOverItem(5)"
             @mouseleave="mouseOverItem(0)">
             <div class="icon-wrapper"
                  style="background-color: rgb(104, 228, 237)">
-                <img src="img/icons/search-menu/book.png" alt="Book Icon">
+                <img src="/static/img/icons/search-menu/book.png" alt="Book Icon">
             </div>
             <p>Buenos Aires</p>
-            <img src="img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
+            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
     </ul>
 </div>

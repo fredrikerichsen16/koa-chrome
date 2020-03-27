@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 
-var MODE = 'development';
+var MODE = 'production';
 var VUE_SRC = path.resolve(__dirname, './vue');
 var VUE_DIST = path.resolve(__dirname, './static/vue-dist');
 
@@ -11,10 +11,11 @@ module.exports = {
     mode: MODE,
     entry: {
         app: VUE_SRC + '/app.js',
+        index: path.resolve(__dirname, './static/js') + '/index.js',
     },
     output: {
         path: VUE_DIST,
-        publicPath: '/vue-dist/',
+        publicPath: '/static/vue-dist/',
         filename: '[name].js',
         chunkFilename: '[id].chunk.js',
     },

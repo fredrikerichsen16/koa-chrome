@@ -1,12 +1,12 @@
 // _varname to avoid polluting the variable name space
 
-import Cookies from 'js-cookie';
+import storage from 'local-storage';
 import _widgets from '../widgets/widgets.json';
 
-let _userWidgets = Cookies.getJSON('user').widgets;
+let _userWidgets = storage.get('user').widgets;
 
 _widgets.filter((widget) => {
-    return _userWidgets.includes(widget);
+    return _userWidgets.includes(widget.slug);
 });
 
 _widgets.map((widget) => {

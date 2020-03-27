@@ -1,6 +1,35 @@
 <script>
     export default {
-        name: 'SavedWebsites'
+        name: 'SavedWebsites',
+
+        data() {
+            return {
+                websites: []
+            };
+        },
+
+        mounted() {
+            const URL = 'https://www.facebook.com/';
+
+            this.websites = [
+                {
+                    name: 'Facebook',
+                    url: 'https://www.facebook.com/'
+                },
+                {
+                    name: 'Reddit',
+                    url: 'https://www.reddit.com/'
+                },
+                {
+                    name: 'Instagram',
+                    url: 'https://www.instagram.com/'
+                },
+                {
+                    name: 'StackOverflow',
+                    url: 'https://www.stackoverflow.com/'
+                },
+            ];
+        }
     }
 </script>
 
@@ -21,85 +50,85 @@
         </a>
         <a>
             <div>
-                <img src="img/favicons/youtube.png">
+                <img src="/static/img/favicons/youtube.png">
             </div>
             <p>Netflix</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/instagram.png">
+                <img src="/static/img/favicons/instagram.png">
             </div>
             <p>Instagram</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/facebook.png">
+                <img src="/static/img/favicons/facebook.png">
             </div>
             <p>Reddit</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/google.png">
+                <img src="/static/img/favicons/google.png">
             </div>
             <p>Codepen</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/youtube.png">
+                <img src="/static/img/favicons/youtube.png">
             </div>
             <p>StackOverflow</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/instagram.png">
+                <img src="/static/img/favicons/instagram.png">
             </div>
             <p>YouTube</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/facebook.png">
+                <img src="/static/img/favicons/facebook.png">
             </div>
             <p>Facebook</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/google.png">
+                <img src="/static/img/favicons/google.png">
             </div>
             <p>Google</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/facebook.png">
+                <img src="/static/img/favicons/facebook.png">
             </div>
             <p>Netflix</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/instagram.png">
+                <img src="/static/img/favicons/instagram.png">
             </div>
             <p>Instagram</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/facebook.png">
+                <img src="/static/img/favicons/facebook.png">
             </div>
             <p>Reddit</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/google.png">
+                <img src="/static/img/favicons/google.png">
             </div>
             <p>Codepen</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/facebook.png">
+                <img src="/static/img/favicons/facebook.png">
             </div>
             <p>StackOverflow</p>
         </a>
         <a>
             <div>
-                <img src="img/favicons/youtube.png">
+                <img src="/static/img/favicons/youtube.png">
             </div>
             <p>YouTube</p>
         </a>

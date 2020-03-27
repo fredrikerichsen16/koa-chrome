@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import storage from 'local-storage';
 
 Vue.use(Vuex);
 
@@ -13,8 +14,7 @@ const state = {
 
 const mutations = {
     SET_USER: (state) => {
-        let user = Cookies.getJSON('user') || {};
-        state.user = user;
+        state.user = storage.get('user');
     },
 
     CHANGE_MAGIC_SEARCH_POSITION: (state, pos) => {

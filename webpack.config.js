@@ -2,8 +2,8 @@ var path = require('path')
 var webpack = require('webpack')
 
 var MODE = 'production';
-var VUE_SRC = path.resolve(__dirname, './vue');
-var VUE_DIST = path.resolve(__dirname, './static/vue-dist');
+var VUE_SRC = path.resolve(__dirname, 'dist/vue');
+var VUE_DIST = path.resolve(__dirname, 'dist/static/vue-dist');
 
 const { VueLoaderPlugin } = require('vue-loader');
 
@@ -11,7 +11,7 @@ module.exports = {
     mode: MODE,
     entry: {
         app: VUE_SRC + '/app.js',
-        index: path.resolve(__dirname, './static/js') + '/index.js',
+        index: path.resolve(__dirname, 'dist/static/js') + '/index.js',
     },
     output: {
         path: VUE_DIST,

@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack",
-    "build-style": "node-sass static/scss -o static/css && webpack",
-    "watch-scss": "node-sass --watch static/scss -o static/css"
+    "build-style": "node-sass dist/static/scss -o static/css && webpack",
+    "watch-scss": "node-sass --watch dist/static/scss -o static/css"
   },
   "author": "",
   "license": "ISC",

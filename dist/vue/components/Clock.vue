@@ -62,7 +62,7 @@ div#clock {
     top: 11px;
     left: 80px;
 
-    font-family: Arial, "Times New Roman";
+    font-family: $default-font;
     color: #515151;
     font-weight: 300;
     text-transform: uppercase;

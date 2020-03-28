@@ -5,15 +5,17 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack",
-    "build-style": "node-sass dist/static/scss -o static/css && webpack",
-    "watch-scss": "node-sass --watch dist/static/scss -o static/css"
+    "build-style": "node-sass dist/static/scss -o dist/static/css && webpack",
+    "watch-scss": "node-sass --watch dist/static/scss -o dist/static/css"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "js-cookie": "^2.2.1",
     "local-storage": "^2.0.0",
+    "math-expression-evaluator": "^1.2.22",
     "vue": "^2.6.11",
     "vue-debounce": "^2.5.1",
     "vue-router": "^3.1.6",

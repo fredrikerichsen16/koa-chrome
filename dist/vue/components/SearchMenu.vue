@@ -1,12 +1,16 @@
 <script>
 
 import { mapState, mapMutations } from 'vuex';
+import MagicSearch from "@/services/magic-search/MagicSearch";
 
 export default {
     name: 'SearchMenu',
 
     data() {
-        return {};
+        return {
+            MagicSearchService: new MagicSearch(),
+            searchResults: [],
+        };
     },
 
     computed: {
@@ -21,8 +25,17 @@ export default {
     },
 
     watch: {
-        query(newVal, oldVal) {
-            console.log(oldVal, newVal);
+        query: {
+            immediate: true,
+            async handler(newVal) {
+                if(newVal === '') {
+                    this.searchResults = [];
+                    return;
+                }
+
+                this.searchResults = await this.MagicSearchService.search(newVal);
+                console.log(this.searchResults);
+            }
         }
     },
 
@@ -47,53 +60,22 @@ export default {
     <ul>
         <li v-bind:class="{ highlight: magicSearchPosition === 1 }"
             @mouseover="mouseOverItem(1)"
-            @mouseleave="mouseOverItem(0)"
-            @click="clickItem">
-            <div class="icon-wrapper"
-                 style="background-color: rgb(237, 104, 129)">
-                <img src="/static/img/icons/search-menu/math.png" alt="Math Icon">
-            </div>
-            <p>= 400</p>
-            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
-        </li>
-        <li v-bind:class="{ highlight: magicSearchPosition === 2 }"
-            @mouseover="mouseOverItem(2)"
             @mouseleave="mouseOverItem(0)">
-            <div class="icon-wrapper"
-                 style="background-color: rgba(100, 118, 243)">
+            <div class="icon-wrapper">
                 <img src="/static/img/icons/search-menu/google.png" alt="Google Icon">
             </div>
             <p>Search Google</p>
             <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
-        <li v-bind:class="{ highlight: magicSearchPosition === 3 }"
-            @mouseover="mouseOverItem(3)"
+
+        <li v-for="(result, idx) in searchResults"
+            :class="{ highlight: magicSearchPosition === (idx + 2) }"
+            @mouseover="mouseOverItem(idx + 2)"
             @mouseleave="mouseOverItem(0)">
-            <div class="icon-wrapper"
-                 style="background-color: rgba(244, 195, 109)">
-                <img src="/static/img/icons/search-menu/maps.png" alt="Google Maps Icon">
+            <div class="icon-wrapper">
+                <img :src="'/static/img/icons/search-menu/' + result.icon">
             </div>
-            <p>Search Google Maps</p>
-            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
-        </li>
-        <li v-bind:class="{ highlight: magicSearchPosition === 4 }"
-            @mouseover="mouseOverItem(4)"
-            @mouseleave="mouseOverItem(0)">
-            <div class="icon-wrapper"
-                 style="background-color: rgb(104, 237, 124)">
-                <img src="/static/img/icons/search-menu/currency-conversion.png" alt="Currency Conversion Icon">
-            </div>
-            <p>24 EUR = 244 NOK</p>
-            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
-        </li>
-        <li v-bind:class="{ highlight: magicSearchPosition === 5 }"
-            @mouseover="mouseOverItem(5)"
-            @mouseleave="mouseOverItem(0)">
-            <div class="icon-wrapper"
-                 style="background-color: rgb(104, 228, 237)">
-                <img src="/static/img/icons/search-menu/book.png" alt="Book Icon">
-            </div>
-            <p>Buenos Aires</p>
+            <p>{{ result.text }}</p>
             <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
         </li>
     </ul>
@@ -102,6 +84,28 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+// TEMPORARY hard-cored colors.
+#menu li:nth-of-type(1) div.icon-wrapper {
+    background-color: rgb(100, 118, 243);
+}
+
+#menu li:nth-of-type(2) div.icon-wrapper {
+    background-color: rgb(237, 104, 129);
+}
+
+#menu li:nth-of-type(3) div.icon-wrapper {
+    background-color: rgb(244, 195, 109);
+}
+
+#menu li:nth-of-type(4) div.icon-wrapper {
+    background-color: rgb(104, 237, 124);
+}
+
+#menu li:nth-of-type(5) div.icon-wrapper {
+    background-color: rgb(104, 228, 237);
+}
+
 div#menu {
     margin-top: 15px;
     width: 380px;

@@ -11,30 +11,33 @@ export default {
 
     data() {
         return {
-            searchEngine: 'Google',
             queryInput: '',
             query: '',
+
             showMenu: false,
             showMenuFirstTime: false,
+
+            searchSite: "GOOGLE",
+            searchSiteOptions: [
+                { value: "GOOGLE" },
+                { value: "YOUTUBE" },
+                { value: "MAPS" },
+                { value: "YAHOO" },
+                { value: "AMAZON" },
+                { value: "NAVER" }
+            ],
         };
     },
 
     computed: {
         /**
-         * Get placeholder attribute for input, depending on user's preferred search engine
-         */
-        placeholder() {
-            return 'Search ' + this.searchEngine + '...';
-        },
-
-        /**
          * Get action attribute for form, depending on user's preferred search engine
          */
-        action() {
-            if(this.searchEngine === 'Google') {
-                return "https://www.google.com/search";
-            }
-        },
+        // action() {
+        //     if(this.searchSite === 'GOOGLE') {
+        //         return "https://www.google.com/search";
+        //     }
+        // },
 
         ...mapState(['magicSearchPosition'])
     },
@@ -47,10 +50,11 @@ export default {
 
             if(this.queryInput === '') {
                 this.showMenu = false;
-            } else {
-                this.showMenu = true;
-                this.showMenuFirstTime = true;
+                return;
             }
+
+            this.showMenu = true;
+            this.showMenuFirstTime = true;
         },
 
         selectDown() {
@@ -64,6 +68,10 @@ export default {
         },
 
         focusInput() {
+            // TEMPORARY to disable the FUCKING MUTHER FUCKERS AT CHROME
+            let inp = document.getElementById('magic_search_input');
+            inp.value = ' ';
+
             this.CHANGE_MAGIC_SEARCH_POSITION(0);
 
             if(this.query !== '') {
@@ -76,9 +84,21 @@ export default {
             this.CHANGE_MAGIC_SEARCH_POSITION(0);
         },
 
+        focusOnSelect() {
+            this.$refs.selectSearchSite.focus();
+        },
+
         onFormSubmit(e) {
-            if(this.magicSearchPosition != 0) {
-                e.preventDefault();
+            if(e) e.preventDefault();
+
+            if(this.magicSearchPosition == 0) {
+                if(this.searchSite === 'GOOGLE') {
+                    location.href = 'https://www.google.com/search?q=' + this.queryInput;
+                } else if(this.searchSite === 'AMAZON') {
+                    location.href = 'https://www.amazon.com/s?k=' + this.queryInput;
+                } else if(this.searchSite === 'YOUTUBE') {
+                    location.href = 'https://www.youtube.com/results?search_query=' + this.queryInput;
+                }
             }
 
             if(this.magicSearchPosition == 2) {
@@ -98,19 +118,31 @@ export default {
     <form id="search"
           method="GET"
           v-bind:action="action"
-          @submit="onFormSubmit($event)">
-        <input type="text"
-               id="magic_search_input"
-               name="q"
-               autofocus="autofocus"
-               autocomplete="new-password"
-               v-bind:placeholder="placeholder"
-               v-model.trim="queryInput"
-               v-debounce:500="search"
-               @focus="focusInput"
-               @blur="blurInput"
-               v-on:keyup.down="selectDown"
-               v-on:keydown.up="selectUp($event)">
+          @submit="onFormSubmit($event)"
+          autocomplete="off">
+        <div id="searchbox">
+            <input type="text"
+                   id="magic_search_input"
+                   name="q"
+                   autofocus="autofocus"
+                   autocomplete="nope"
+                   placeholder="Magic Search..."
+                   v-model.trim="queryInput"
+                   v-debounce:500="search"
+                   @focus="focusInput"
+                   @blur="blurInput"
+                   v-on:keyup.down="selectDown"
+                   v-on:keydown.up="selectUp($event)">
+
+            <select ref="selectSearchSite"
+                    v-model="searchSite"
+                    v-on:keydown.enter="onFormSubmit()">
+                <option v-for="option in searchSiteOptions" :value="option.value">{{ option.value }}</option>
+            </select>
+
+            <span class="phantom-select"
+                  @click="focusOnSelect">{{ searchSite }}</span>
+        </div>
 
         <transition name="toggle-menu" mode="out-in">
             <SearchMenu v-if="showMenuFirstTime"
@@ -122,29 +154,62 @@ export default {
 
 <style lang="scss" scoped>
 
-div#content form#search {
-    width: 400px;
+@import '~@static/scss/variables.scss';
 
-    $inputBackground: rgba(87, 109, 127, 0.47);
-    $inputBoxShadow: rgba(48, 60, 70, 0.8);
-    $inputTextColor: rgba(255, 255, 255, 0.8);
-    $inputPlaceholderColor: rgba(255, 255, 255, 0.5);
+$inputBackground: rgba(87, 109, 127, 0.47);
+$inputBoxShadow: rgba(48, 60, 70, 0.8);
+$inputTextColor: rgba(255, 255, 255, 0.8);
+$inputPlaceholderColor: rgba(255, 255, 255, 0.5);
+
+form#search div#searchbox {
+    width: 400px;
+    background: $inputBackground;
+    box-shadow: 1px 1px 1px 1px $inputBoxShadow;
+    border-radius: 8px;
+    padding: 15px 20px;
+    overflow: auto;
 
     input[type="text"] {
-        width: calc(100% - 40px);
-        background: $inputBackground;
-        box-shadow: 1px 1px 1px 1px $inputBoxShadow;
-        border-radius: 8px;
+        width: 320px;
         color: $inputTextColor;
-        padding: 15px 20px;
         font-size: 20px;
-        font-family: Roboto, Arial;
+        font-family: $default-font;
         border: none;
         outline: none;
+        background-color: rgba(0, 0, 0, 0);
 
         &::placeholder {
             color: $inputPlaceholderColor;
-            font-family: Roboto, Arial;
+            font-family: $default-font;
+        }
+    }
+
+    span.phantom-select {
+        width: 70px;
+        margin-top: 6px;
+        float: right;
+        text-align: right;
+        font-family: $default-font;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+        }
+    }
+
+    input[type="text"],
+    span.phantom-select {
+        display: inline-block;
+    }
+
+    select {
+        position: absolute;
+        margin-top: -5000px;
+
+        &:focus + span.phantom-select {
+            color: rgba(255, 255, 255, 1);
         }
     }
 }

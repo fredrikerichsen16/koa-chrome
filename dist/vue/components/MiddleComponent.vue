@@ -1,13 +1,30 @@
 <script>
+import storage from 'local-storage';
 
 export default {
     name: 'MiddleComponent',
 
     data() {
+        let user = storage.get('user');
+        let slide;
+
+        if(user.hasOwnProperty('middleComponent') && user.middleComponent.hasOwnProperty('slide') && typeof user.middleComponent.slide === "number")
+        {
+            slide = user.middleComponent.slide;
+        }
+        else
+        {
+            slide = 0;
+            user.middleComponent = {
+                slide: 0
+            };
+            storage.set('user', user);
+        }
+
         let components = [
             {
                 name: 'SearchBar',
-                loaded: true,
+                loaded: false,
             },
             {
                 name: 'SavedWebsites',
@@ -19,10 +36,13 @@ export default {
             },
         ];
 
+        components[slide].loaded = true;
+
         return {
-            slide: 0,
             nSlides: components.length,
+            slide,
             components,
+            user,
         };
     },
 
@@ -62,6 +82,9 @@ export default {
             {
                 this.slide = n;
             }
+
+            this.user.middleComponent.slide = this.slide;
+            storage.set('user', this.user);
 
             this.components[this.slide].loaded = true;
         }

@@ -7,16 +7,12 @@ Vue.use(Vuex);
 const modules = {};
 
 const state = {
-    user: {},
+    user: storage.get('user'),
 
     magicSearchPosition: 0,
 };
 
 const mutations = {
-    SET_USER: (state) => {
-        state.user = storage.get('user');
-    },
-
     CHANGE_MAGIC_SEARCH_POSITION: (state, pos) => {
         state.magicSearchPosition = pos;
     },

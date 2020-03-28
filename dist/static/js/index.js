@@ -16,7 +16,10 @@ if (!$user) {
             clockFormat: '12HR',
             language: 'EN',
         },
-        widgets: ['news-digest', 'todo', 'stocks']
+        widgets: ['news-digest', 'todo', 'stocks'],
+        middleComponent: {
+            slide: 1
+        },
     };
 
     storage.set('user', $user);

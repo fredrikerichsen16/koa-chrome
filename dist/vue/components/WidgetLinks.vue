@@ -16,9 +16,7 @@
       :key="idx"
       :to="route.path">
         <img :src="'/static/img/icons/' + route.meta.icon"
-             :alt="route.meta.name + 'Icon'"
-             data-wenk="News Digest"
-             data-wenk-pos="right">
+             :alt="route.meta.name + 'Icon'">
     </router-link>
 </div>
 

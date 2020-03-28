@@ -1,6 +1,5 @@
 <script>
 
-import { mapState, mapMutations } from 'vuex';
 import MagicSearch from "@/services/magic-search/MagicSearch";
 
 export default {
@@ -10,11 +9,12 @@ export default {
         return {
             MagicSearchService: new MagicSearch(),
             searchResults: [],
+            show: false,
         };
     },
 
     computed: {
-        ...mapState(['magicSearchPosition']),
+
     },
 
     props: {
@@ -30,24 +30,26 @@ export default {
             async handler(newVal) {
                 if(newVal === '') {
                     this.searchResults = [];
+                    this.show = false;
                     return;
                 }
 
                 this.searchResults = await this.MagicSearchService.search(newVal);
-                console.log(this.searchResults);
+                this.showMenu(this.searchResults.length > 0);
             }
         }
     },
 
     methods: {
-        ...mapMutations(['CHANGE_MAGIC_SEARCH_POSITION']),
+        showMenu(bool = true) {
+            if(!bool) {
+                this.show = false;
+                return;
+            }
 
-        mouseOverItem(n) {
-            this.CHANGE_MAGIC_SEARCH_POSITION(n);
-        },
-
-        clickItem() {
-            location.href = 'http://www.wolframalpha.com';
+            if(this.searchResults.length > 0) {
+                this.show = true;
+            }
         }
     },
 }
@@ -56,22 +58,9 @@ export default {
 
 <template>
 
-<div id="menu">
+<div id="menu" v-show="show">
     <ul>
-        <li v-bind:class="{ highlight: magicSearchPosition === 1 }"
-            @mouseover="mouseOverItem(1)"
-            @mouseleave="mouseOverItem(0)">
-            <div class="icon-wrapper">
-                <img src="/static/img/icons/search-menu/google.png" alt="Google Icon">
-            </div>
-            <p>Search Google</p>
-            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
-        </li>
-
-        <li v-for="(result, idx) in searchResults"
-            :class="{ highlight: magicSearchPosition === (idx + 2) }"
-            @mouseover="mouseOverItem(idx + 2)"
-            @mouseleave="mouseOverItem(0)">
+        <li v-for="result in searchResults">
             <div class="icon-wrapper">
                 <img :src="'/static/img/icons/search-menu/' + result.icon">
             </div>
@@ -108,7 +97,7 @@ export default {
 
 div#menu {
     margin-top: 15px;
-    width: 380px;
+    width: 420px;
     background: white;
     border-radius: 10px;
     padding: 10px;
@@ -122,7 +111,7 @@ div#menu {
         border-radius: 10px;
         transition: .4s background;
 
-        &.highlight {
+        &:hover {
             background: rgb(245, 245, 245);
             cursor: pointer;
         }

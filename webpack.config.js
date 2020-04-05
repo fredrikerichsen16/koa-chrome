@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 
-var MODE = 'production';
+var MODE = 'development';
 var VUE_SRC = path.resolve(__dirname, 'dist/vue');
 var VUE_DIST = path.resolve(__dirname, 'dist/static/vue-dist');
 

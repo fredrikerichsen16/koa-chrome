@@ -44,6 +44,12 @@ div#background {
     height: 100%;
     width: 100%;
     z-index: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
 
     div#content {

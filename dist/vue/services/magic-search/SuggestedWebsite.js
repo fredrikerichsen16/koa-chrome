@@ -1,9 +1,7 @@
-export default class Conversion {
+export default class SuggestedWebsite {
 
     static last(query) {
-        if(query !== '1 ounce to grams') {
-            return null;
-        }
+        if(query === 'University of Leiden')
 
         return {
             type: 'block',

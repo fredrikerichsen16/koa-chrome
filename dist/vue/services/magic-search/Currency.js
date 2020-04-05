@@ -1,11 +1,5 @@
 import axios from 'axios';
-
-const currencies = {
-    'usd': ['US Dollars', 'us dollars', 'dollars', 'american dollars'],
-    'eur': ['Euros', 'euros', 'dollars'],
-    'nok': ['Norwegian kroner', 'norwegian kroner'],
-    'gbp': ['British pounds', 'british pounds', 'british sterling', 'pounds'],
-}
+import currencies from './currencies.json';
 
 function getCurrencyCode(s) {
     s = s.toLowerCase();
@@ -64,9 +58,13 @@ export default class Conversion {
         });
 
         return {
-            url: null,
-            text: '= ' + result.data.result,
-            icon: 'currency-conversion.png'
+            type: 'block',
+            inline: true,
+            content: {
+                text: '= ' + result.data.result,
+                icon: 'currency-conversion.png',
+                button: null
+            }
         };
     }
 }

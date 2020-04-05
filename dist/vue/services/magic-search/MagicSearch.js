@@ -1,6 +1,8 @@
 import Calculator from './Calculator.js';
 import Conversion from './Conversion.js';
 import Currency from './Currency.js';
+import Websites from './Websites.js';
+import SuggestedWebsite from './SuggestedWebsite.js';
 
 export default class MagicSearch {
 
@@ -8,24 +10,29 @@ export default class MagicSearch {
         // this.searchers = [Calculator, Currency, Conversion];
     }
 
-    async search(query) {
+    async delayedSearch(query) {
         let calculatorResult = await this.runSearch(query, Calculator);
         let conversionResult = await this.runSearch(query, Conversion);
         let currencyResult = await this.runSearch(query, Currency);
 
-        let output = [calculatorResult, conversionResult, currencyResult];
+        let result = [calculatorResult, conversionResult, currencyResult];
 
-        output = output.filter(item => item);
+        result = result.filter(item => item);
 
-        return output;
+        return result;
+    }
+
+    immediateSearch(query, cb) {
+        this.runSearch(query, Websites)
+            .then((result) => {
+                return cb(result);
+        });
     }
 
     async runSearch(query, Searcher) {
-        if(!Searcher.first(query)) return null;
+        if(Searcher.hasOwnProperty('first') && !Searcher.first(query)) return null;
 
         if(Searcher.hasOwnProperty('second') && !Searcher.second(query)) return null;
-
-        if(Searcher.hasOwnProperty('third') && !Searcher.third(query)) return null;
 
         if(!Searcher.hasOwnProperty('last')) return null;
 

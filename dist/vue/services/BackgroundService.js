@@ -8,7 +8,7 @@ class BackgroundService {
     }
 
     get nextShuffleTime() {
-        return 1; // this.now + (1000 * 60 * 2);
+        return this.now + (1000 * 60 * 60); // every hour
     }
 
     /**

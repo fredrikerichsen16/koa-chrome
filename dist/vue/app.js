@@ -4,7 +4,9 @@ import store from './store';
 import router from './router';
 import vueDebounce from 'vue-debounce';
 
-Vue.use(vueDebounce);
+Vue.use(vueDebounce, {
+    fireOnEmpty: false
+});
 
 Vue.config.productionTip = false;
 

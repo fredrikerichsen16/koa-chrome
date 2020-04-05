@@ -8,36 +8,48 @@ export default {
     data() {
         return {
             MagicSearchService: new MagicSearch(),
-            searchResults: [],
+            immediateSearchResults: [],
+            delayedSearchResults: [],
             show: false,
         };
-    },
-
-    computed: {
-
     },
 
     props: {
         query: {
             type: String,
-            required: true
+            required: true,
+        },
+        input: {
+            type: String,
+            required: true,
         }
     },
 
     watch: {
-        query: {
+        input: {
             immediate: true,
-            async handler(newVal) {
+            handler(newVal) {
                 if(newVal === '') {
-                    this.searchResults = [];
+                    this.delayedSearchResults = [];
+                    this.immediateSearchResults = [];
                     this.show = false;
                     return;
                 }
 
-                this.searchResults = await this.MagicSearchService.search(newVal);
-                this.showMenu(this.searchResults.length > 0);
+                this.MagicSearchService.immediateSearch(newVal,(results) => {
+                    this.immediateSearchResults = results;
+                    this.showMenu();
+                });
             }
-        }
+        },
+
+        query: {
+            immediate: true,
+            async handler(newVal) {
+                this.delayedSearchResults = await this.MagicSearchService.delayedSearch(newVal);
+                this.showMenu();
+            }
+        },
     },
 
     methods: {
@@ -47,8 +59,10 @@ export default {
                 return;
             }
 
-            if(this.searchResults.length > 0) {
+            if((this.immediateSearchResults.length + this.delayedSearchResults.length) > 0) {
                 this.show = true;
+            } else {
+                this.show = false;
             }
         }
     },
@@ -59,118 +73,133 @@ export default {
 <template>
 
 <div id="menu" v-show="show">
-    <ul>
-        <li v-for="result in searchResults">
-            <div class="icon-wrapper">
-                <img :src="'/static/img/icons/search-menu/' + result.icon">
+    <template v-for="result in delayedSearchResults">
+        <div v-if="result.type === 'block'"
+             class="block">
+            <span class="header">{{ result.header }}</span>
+            <div class="block">
+                <p>{{ result.content.text }}</p>
             </div>
-            <p>{{ result.text }}</p>
-            <img src="/static/img/icons/search-menu/arrow.png" alt="Arrow right" class="arrow">
-        </li>
-    </ul>
+        </div>
+
+        <div v-if="result.type === 'inline'"
+             class="inline">
+            <img src="https://img.icons8.com/doodle/344/google-logo.png" alt="" class="icon">
+            <div class="content">{{ result.content.text }}</div>
+            <a v-if="result.content.button"
+               :href="result.content.button.url"
+               class="button">{{ result.content.button.text }}</a>
+        </div>
+    </template>
+
+    <a v-for="page in immediateSearchResults"
+       v-if="page.type === 'link'"
+       class="link"
+       :title="page.url"
+       :data-favicon="page.content.favicon">{{ page.content.title }}</a>
 </div>
 
 </template>
 
 <style lang="scss" scoped>
 
-// TEMPORARY hard-cored colors.
-#menu li:nth-of-type(1) div.icon-wrapper {
-    background-color: rgb(100, 118, 243);
-}
-
-#menu li:nth-of-type(2) div.icon-wrapper {
-    background-color: rgb(237, 104, 129);
-}
-
-#menu li:nth-of-type(3) div.icon-wrapper {
-    background-color: rgb(244, 195, 109);
-}
-
-#menu li:nth-of-type(4) div.icon-wrapper {
-    background-color: rgb(104, 237, 124);
-}
-
-#menu li:nth-of-type(5) div.icon-wrapper {
-    background-color: rgb(104, 228, 237);
-}
-
 div#menu {
-    margin-top: 15px;
-    width: 420px;
-    background: white;
-    border-radius: 10px;
-    padding: 10px;
-    position: absolute;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-    box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.6);
+    width: 450px;
+    background: rgb(32, 33, 36);
+    padding: 10px 0;
+    border-radius: 6px;
 
-    ul li {
-        padding: 6px 10px;
-        margin-bottom: 6px;
-        border-radius: 10px;
-        transition: .4s background;
+    position: absolute;
+    margin-top: 15px;
+    z-index: 2;
+
+    a.suggested {
+        &:after {
+            content: "Suggested Website";
+            position: absolute;
+            right: 10px;
+            top: 11px;
+            color: #666;
+            font-size: 10px;
+        }
+    }
+
+    a.link {
+        float: left;
+        min-width: 422px;
+        width: 422px;
+        white-space: nowrap;
+        overflow-x: hidden;
+
+        &:before {
+            content: url('https://www.google.com/s2/favicons?domain=google.com');
+            margin-right: 10px;
+            top: 2px;
+            position: relative;
+        }
 
         &:hover {
-            background: rgb(245, 245, 245);
+            background-color: rgba(60, 62, 68, 1);
             cursor: pointer;
+            width: auto;
+        }
+    }
+
+    a.link, > span, > div {
+        padding: 6px 14px;
+        color: white;
+        font-family: Arial;
+        font-size: 16px;
+        display: block;
+        position: relative;
+    }
+
+    > div.inline {
+        height: 50px;
+
+        > img.icon, > div.content, > a.button {
+            position: absolute;
         }
 
-        p, div, > img {
-            display: inline-block;
+        > img.icon {
+            /*background-color: rgb(104, 237, 124);*/
+            margin-right: 6px;
+            height: 40px;
+            width: 40px;
+            top: 10px;
         }
 
-        p {
-            font-family: Roboto, Arial;
-            font-size: 18px;
-            color: rgb(114, 119, 140);
-            transform: translateY(-2px);
-            margin-left: 8px;
+        > div.content {
+            width: 250px;
+            top: 22px;
+            left: 65px;
         }
 
-        div.icon-wrapper {
-            height: 35px;
-            width: 35px;
+        > a.button {
+            right: 10px;
+            top: 15px;
+            color: rgb(32, 33, 36);
+
+            font-size: 14px;
+
             border-radius: 10px;
+            background: #00B4DB;
+            background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+            background: linear-gradient(to right, #0083B0, #00B4DB);
+            color: white;
+            padding: 5px 15px;
 
-            > img {
-                height: 19px;
-                width: 19px;
-                margin-top: 8px;
-                margin-left: 8px;
+            vertical-align: middle;
+
+            &:hover {
+                cursor: pointer;
             }
         }
+    }
 
-        img.arrow {
-            float: right;
-            height: 22px;
-            width: 22px;
-            margin-top: 8px;
-            display: none;
-        }
+    > div.block {
+        width: 420px;
     }
 }
 
-.toggle-menu-enter {
-    transform: translateY(-10px);
-    opacity: 0;
-}
-.toggle-menu-enter-to {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.toggle-menu-leave {
-    transform: translateY(0);
-    opacity: 1;
-}
-.toggle-menu-leave-to {
-    transform: translateY(-10px);
-    opacity: 0;
-}
-
-.toggle-menu-enter-active,
-.toggle-menu-leave-active {
-    transition: .35s opacity, .35s transform;
-}
 </style>

@@ -57,9 +57,10 @@ export default class Conversion {
             data: `from-type=${leftCurrency}&to-type=${rightCurrency}&from-value=${leftInt}`
         });
 
+        console.log(result);
+
         return {
-            type: 'block',
-            inline: true,
+            type: 'inline',
             content: {
                 text: '= ' + result.data.result,
                 icon: 'currency-conversion.png',

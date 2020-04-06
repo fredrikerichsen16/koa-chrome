@@ -6,10 +6,9 @@ export default class Conversion {
         }
 
         return {
-            type: 'block',
-            inline: true,
+            type: 'inline',
             content: {
-                text: '= 28 grams',
+                text: '28 grams',
                 icon: 'currency-conversion.png',
                 button: null
             }

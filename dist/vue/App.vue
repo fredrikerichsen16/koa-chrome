@@ -5,6 +5,7 @@ import MiddleComponent from '@/components/MiddleComponent';
 import Quote from '@/components/Quote';
 import Clock from '@/components/Clock';
 import WidgetLinks from '@/components/WidgetLinks';
+import PhotoInfo from '@/components/PhotoInfo';
 import Sidebar from '@/widgets/Sidebar';
 
 export default {
@@ -19,6 +20,7 @@ export default {
         Clock,
         Sidebar,
         WidgetLinks,
+        PhotoInfo,
     },
 }
 
@@ -33,6 +35,7 @@ export default {
             <MiddleComponent />
             <WidgetLinks />
             <Quote />
+            <PhotoInfo />
         </div>
     </div>
 </template>

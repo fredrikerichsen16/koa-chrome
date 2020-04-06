@@ -1,8 +1,11 @@
 export default class Calculator {
 
     static first(query) {
-        // if it doesn't contain any numbeers or constants (pi or e)
+        // if it doesn't contain any numbers or constants (pi or e)
         if(!/(([0-9]|pi|e)+)/i.test(query)) return false;
+
+        // if it ONLY contains letters and whitespace and a few other characters, return false (can't be a math expression)
+        if(/^[A-ZÀ-ÖØ-öø-ÿ\s\:\,\.]+$/i.test(query)) return false;
 
         // if it has invalid use of parentheses
         if(query.split('(').length !== query.split(')').length) return false;
@@ -45,11 +48,10 @@ export default class Calculator {
         }
 
         return {
-            type: 'block',
-            inline: true,
+            type: 'inline',
             content: {
                 text: '= ' + returnVal,
-                icon: 'calculator.png',
+                icon: 'math.png',
                 button: {
                     text: 'Calculator',
                     url: 'https://duckduckgo.com/?q=calculator'

@@ -1,22 +1,32 @@
 import uniqBy from 'lodash.uniqBy';
 
 export default class PageSearch {
-    constructor(options = {fromWebsite: undefined, nPages: 4}) {
+    constructor(query, options = {fromWebsite: undefined, nPages: 6}) {
         /**
          * {
          *     fromWebsite: String - only find results from this website,
          *     nPages: (limit) number of pages to show. Applies to both history results and bookmarks results.
          * }
          */
+        this.query = query.toLowerCase();
         this.options = options;
     }
 
-    async search(query) {
-        query = query.toLowerCase();
-        let result = [await this.searchHistory(query), await this.searchBookmarks(query)];
-        result = result.filter(x => x);
+    async search() {
+        let history = await this.getPages('history');
+        let bookmarks = await this.getPages('bookmarks');
 
-        return result;
+        let suggestedWebsite = this.getSuggestedWebsite();
+        let pages = history.concat(bookmarks);
+
+        pages = this.process(pages);
+        pages = this.sortPages(pages);
+        pages = this.returnPages(pages);
+        pages.unshift(suggestedWebsite);
+
+        pages = pages.filter(x => x);
+
+        return pages;
     }
 
     getFaviconOfUrl(url) {
@@ -41,6 +51,87 @@ export default class PageSearch {
         return pages;
     }
 
+    sortPages(pages) {
+        pages = pages.filter(page => {
+            return page.titleLower.includes(this.query);
+        }).reverse();
+
+        pages = uniqBy(pages, 'url');
+
+        let heuristic;
+        pages.forEach((page) => {
+            heuristic = page.urlLower.matchAll(/(\/\w|\?|\&)/gi);
+            heuristic = Array.from(heuristic);
+            heuristic = heuristic.length;
+            page.lengthHeuristic = heuristic;
+        });
+
+        pages.sort(function(a, b) {
+            return a.lengthHeuristic - b.lengthHeuristic;
+        });
+
+        return pages;
+    }
+
+    returnPages(pages) {
+        pages = pages.slice(0, this.options.nPages);
+
+        // pages.map(function(page) {
+        //     return {
+        //         type: 'link',
+        //         url: page.url,
+        //         content: {
+        //             title: page.title,
+        //             favicon: page.favicon,
+        //         }
+        //     }
+        // });
+
+        let result = [];
+        for(let page of pages) {
+            result.push({
+                type: 'link',
+                url: page.url,
+                content: {
+                    text: page.title,
+                    favicon: page.favicon
+                }
+            });
+        }
+
+        return result;
+    }
+
+    getSuggestedWebsite() {
+        if(this.query === 'university of leiden')
+        {
+            return {
+                type: 'link',
+                url: 'https://www.universiteitleiden.nl',
+                suggested: true,
+                content: {
+                    text: 'Leiden University',
+                    favicon: this.getFaviconOfUrl('https://www.universiteitleiden.nl')
+                }
+            }
+        }
+
+        if(this.query === 'ucl uk')
+        {
+            return {
+                type: 'link',
+                url: 'https://www.ucl.ac.uk/',
+                suggested: true,
+                content: {
+                    text: 'University College London',
+                    favicon: this.getFaviconOfUrl('https://www.ucl.ac.uk/')
+                }
+            }
+        }
+
+        return null;
+    }
+
     flattenBookmarks(bookmarks) {
         let result = [];
 
@@ -61,75 +152,35 @@ export default class PageSearch {
         return result;
     }
 
-    sortPages(pages, query) {
-        pages = pages.filter(page => {
-            return page.titleLower.includes(query);
-        }).reverse();
-
-        pages = uniqBy(pages, 'url');
-
-        let heuristic;
-        pages.forEach((page) => {
-            heuristic = page.urlLower.matchAll(/(\/\w|\?|\&)/gi);
-            heuristic = Array.from(heuristic);
-            heuristic = heuristic.length;
-            page.lengthHeuristic = heuristic;
-        });
-
-        pages.sort(function(a, b) {
-            return a.lengthHeuristic - b.lengthHeuristic;
-        });
-
-        return pages;
-    }
-
-    returnPages(pages, header) {
-        let obj = {
-            type: 'link',
-            header: header,
-            itemsType: 'bookmarks',
-            items: []
-        };
-
-        pages = pages.slice(0, this.options.nPages);
-        pages.map((page) => {
-            return { url: page.url, title: page.title, favicon: page.favicon };
-        });
-
-        obj.items = pages;
-
-        return obj;
-    }
-
-    searchHistory(query) {
+    getPages(source) {
         return new Promise((resolve) => {
-            chrome.history.search({ text: query }, (pages, error) => {
+            let api, arg;
+            if(source === 'history') {
+                api = chrome.history;
+                arg = { text: this.query };
+            } else if(source == 'bookmarks') {
+                api = chrome.bookmarks;
+                arg = this.query;
+            } else {
+                throw new Error('ERROR #4892483924234');
+            }
+
+            api.search(arg, (pages, error) => {
                 if (error) {
-                    resolve(null);
+                    resolve([]);
                 }
-                if(pages.length < 1) resolve(null);
+                if(pages.length < 1) resolve([]);
 
-                pages = this.process(pages, query);
-                pages = this.sortPages(pages, query);
-
-                resolve( this.returnPages(pages,'History') );
-            });
-        });
-    }
-
-    searchBookmarks(query) {
-        return new Promise((resolve) => {
-            chrome.bookmarks.search(query, (pages, error) => {
-                if (error) {
-                    resolve(null);
+                if(source === 'bookmarks') {
+                    pages = this.flattenBookmarks(pages);
                 }
-                if (pages.length < 1) resolve(null);
 
-                pages = this.flattenBookmarks(pages);
-                pages = this.process(pages, query);
-                pages = this.sortPages(pages, query);
+                resolve(pages);
 
-                resolve( this.returnPages(pages, 'Bookmarks') );
+                // pages = this.process(pages, query);
+                // pages = this.sortPages(pages, query);
+                //
+                // resolve( this.returnPages(pages,'History') );
             });
         });
     }

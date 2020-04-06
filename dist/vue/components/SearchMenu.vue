@@ -84,7 +84,7 @@ export default {
 
         <div v-if="result.type === 'inline'"
              class="inline">
-            <img src="https://img.icons8.com/doodle/344/google-logo.png" alt="" class="icon">
+            <img :src="'/static/img/icons/search-menu/' + result.content.icon" alt="" class="icon">
             <div class="content">{{ result.content.text }}</div>
             <a v-if="result.content.button"
                :href="result.content.button.url"
@@ -92,11 +92,13 @@ export default {
         </div>
     </template>
 
-    <a v-for="page in immediateSearchResults"
-       v-if="page.type === 'link'"
-       class="link"
-       :title="page.url"
-       :data-favicon="page.content.favicon">{{ page.content.title }}</a>
+    <div v-for="page in immediateSearchResults"
+         v-if="page.type === 'link'"
+         class="link"
+         :class="{ 'suggested': page.suggested }">
+        <img :src="page.content.favicon">
+        <a :title="page.url" :href="page.url">{{ page.content.text }}</a>
+    </div>
 </div>
 
 </template>
@@ -113,29 +115,17 @@ div#menu {
     margin-top: 15px;
     z-index: 2;
 
-    a.suggested {
-        &:after {
-            content: "Suggested Website";
-            position: absolute;
-            right: 10px;
-            top: 11px;
-            color: #666;
-            font-size: 10px;
-        }
-    }
-
-    a.link {
+    div.link {
         float: left;
         min-width: 422px;
         width: 422px;
         white-space: nowrap;
         overflow-x: hidden;
 
-        &:before {
-            content: url('https://www.google.com/s2/favicons?domain=google.com');
-            margin-right: 10px;
-            top: 2px;
+        > img {
             position: relative;
+            top: 2px;
+            margin-right: 4px;
         }
 
         &:hover {
@@ -143,9 +133,23 @@ div#menu {
             cursor: pointer;
             width: auto;
         }
+
+        &.suggested:after {
+            content: "Suggested Website";
+            position: absolute;
+            right: 10px;
+            top: 11px;
+            color: #666;
+            font-size: 10px;
+        }
+
+        > a {
+            color: white;
+            text-decoration: none;
+        }
     }
 
-    a.link, > span, > div {
+    > span, > div {
         padding: 6px 14px;
         color: white;
         font-family: Arial;

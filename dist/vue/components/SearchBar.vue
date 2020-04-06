@@ -125,6 +125,7 @@
         <SearchMenu v-if="renderMenu"
                     :input="input"
                     :query="query"
+                    :searchSite="searchSite"
                     ref="SearchMenu"/>
     </form>
 </template>

@@ -62,7 +62,7 @@ div#sidebar {
 
 .toggle-sidebar-enter-active,
 .toggle-sidebar-leave-active {
-    transition: transform .4s;
+    transition: transform .25s;
 }
 
 #gray {
@@ -90,7 +90,7 @@ div#sidebar {
 
     &.toggle-gray-enter-active,
     &.toggle-gray-leave-active {
-        transition: opacity .4s .075s;
+        transition: opacity .25s .075s;
     }
 }
 

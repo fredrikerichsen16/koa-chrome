@@ -35,50 +35,50 @@
 
 <style lang="scss" scoped>
 
-    div {
-        position: absolute;
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
+div {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
 
-        p {
-            font-family: Roboto, Arial, "Times New Roman";
-            text-align: center;
-        }
+    p {
+        font-family: Roboto, Arial, "Times New Roman";
+        text-align: center;
+    }
 
-        p.quote {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: lighter;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+    p.quote {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: lighter;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
 
+        transform: translateY(5px);
+        transition: .3s transform ease;
+    }
+
+    p.author {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: lighter;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+
+        transform: translateY(-7px);
+        opacity: 0;
+        transition: .3s transform ease, .3s opacity ease;
+    }
+
+    div:hover {
+        cursor: pointer;
+
+        > p.author {
             transform: translateY(5px);
-            transition: .3s transform ease;
+            opacity: 1;
         }
 
-        p.author {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: lighter;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
-
-            transform: translateY(-7px);
-            opacity: 0;
-            transition: .3s transform ease, .3s opacity ease;
-        }
-
-        div:hover {
-            cursor: pointer;
-
-            > p.author {
-                transform: translateY(5px);
-                opacity: 1;
-            }
-
-            > p.quote {
-                transform: translateY(0px);
-            }
+        > p.quote {
+            transform: translateY(0px);
         }
     }
+}
 
 </style>

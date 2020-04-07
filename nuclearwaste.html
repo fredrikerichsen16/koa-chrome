@@ -1,38 +1,12 @@
 <!-- STORE ANY TRASH HERE YOU MIGHT WANT TO COPY PASTE LATER -->
 
-<!-- codepen html -->
-<div id="menu" v-show="show">
-    <span class="header">WolframAlpha</span>
-    <div class="block">
-        <span>= 500</span> <div class="btn"></div>
-    </div>
-    <div class="inline">
-        <div class="icon"></div>
-        <div class="content">Hallo</div>
-        <div class="button-container">
-            <a href="#" class="button">Calculator</a>
-        </div>
-    </div>
-
-    <span class="header">Bookmarks</span>
-    <a class="bookmark" title="FULL URL">
-        <div class="icon"></div>
-        <div class="content">WordsAPI - https://www.wordsapi.com/</div>
-    </a>
-    <a class="bookmark">
-        <div class="icon"></div>
-        <div class="content">WordsAPI - https://www.wordsapi.com/</div>
-    </a>
-    <span class="header">History</span>
-    <a class="link bookmark">
-        <div class="icon"></div>
-        <div class="content">WordsAPI - https://www.wordsapi.com/</div>
-    </a>
-    <a class="bookmark">
-        <div class="icon"></div>
-        <div class="content">WordsAPI - https://www.wordsapi.com/</div>
-    </a>
-</div>
+    <router-link
+      v-for="(route, idx) in $router.options.routes"
+      :key="idx"
+      :to="route.path">
+        <img :src="'/static/img/icons/' + route.meta.icon"
+             :alt="route.meta.name + 'Icon'">
+    </router-link>
 
 <!-- codepen css -->
 // TEMPORARY hard-cored colors.

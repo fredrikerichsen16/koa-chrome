@@ -1,12 +1,22 @@
 <script>
+import storage from 'local-storage';
+
 export default {
-    name: 'PhotoInfo'
+    name: 'PhotoInfo',
+
+    methods: {
+        switchBG() {
+            let $user = storage.get('user');
+            $user.backgrounds.nextShuffle = 0;
+            storage.set('user', $user);
+        }
+    }
 }
 </script>
 
 <template>
     <div id="photo_info">
-        <p>Maui, Hawaii</p>
+        <p @click="switchBG">Maui, Hawaii</p>
         <a href="https://www.instagram.com/jarvisphoto/">Photo by Braden Jarvis</a>
     </div>
 </template>

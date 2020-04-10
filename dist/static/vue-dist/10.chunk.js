@@ -1,1 +1,14 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{106:function(t,e,a){"use strict";a.r(e);var n=function(){var t=this.$createElement;this._self._c;return this._m(0)};n._withStripped=!0;var r={name:"WeatherToday"},i=(a(69),a(1)),s=Object(i.a)(r,n,[function(){var t=this.$createElement,e=this._self._c||t;return e("div",{attrs:{id:"weather_today"}},[e("h1",[this._v("Weather")]),this._v(" "),e("span",{attrs:{"data-wenk":"News Digest","data-wenk-pos":"right"}},[this._v("24 degrees today bro!")])])}],!1,null,"b234257c",null);s.options.__file="dist/vue/components/WeatherToday.vue";e.default=s.exports},55:function(t,e,a){var n=a(70);"string"==typeof n&&(n=[[t.i,n,""]]),n.locals&&(t.exports=n.locals);(0,a(5).default)("6105b1fa",n,!1,{})},69:function(t,e,a){"use strict";var n=a(55);a.n(n).a},70:function(t,e,a){(t.exports=a(4)(!1)).push([t.i,"div#weather_today[data-v-b234257c] {\n  height: 300px;\n  width: 550px;\n  border-radius: 20px;\n  padding: 10px 0;\n  background: linear-gradient(-45deg, rgba(150, 150, 150, 0.4), rgba(87, 109, 127, 0.3));\n  backdrop-filter: blur(5px);\n  -webkit-backdrop-filter: blur(5px);\n}\n",""])}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[10],{
+
+/***/ "./dist/vue/widgets/README.md":
+/*!************************************!*\
+  !*** ./dist/vue/widgets/README.md ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("throw new Error(\"Module parse failed: Unexpected character '#' (1:0)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n> #### widgets.json\\n| This file contains a JSON array of objects like this:\\n| \");\n\n//# sourceURL=webpack:///./dist/vue/widgets/README.md?");
+
+/***/ })
+
+}]);

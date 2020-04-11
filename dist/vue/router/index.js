@@ -12,7 +12,7 @@ const router = new VueRouter({
     routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
     /**
      * Authenticate user before they enter sensitive routes (widgets) and load content
      */
@@ -26,9 +26,9 @@ router.beforeEach(async (to, from, next) => {
             location.href = 'http://localhost:3002/signin';
         }
 
-        router.authorized = true;
+        storage.set('user', user);
 
-        console.log(user);
+        router.authorized = true;
 
         return next();
     });

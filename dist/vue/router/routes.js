@@ -2,25 +2,32 @@
 
 import storage from 'local-storage';
 import _widgets from '../widgets/widgets.json';
+import find from 'lodash.find';
 
 let _userWidgets = storage.get('user').widgets;
 
-_widgets.filter((widget) => {
-    return _userWidgets.includes(widget.slug);
-});
+let _match = [];
 
-_widgets.map((widget) => {
-    widget.path = '/' + widget.slug;
-    widget.component = () => import(`../widgets/${widget.name}/${widget.name}`);
-    widget.meta = widget.options;
-    widget.meta.name = widget.title;
-    widget.meta.slug = widget.slug;
+for(let widget of _widgets) {
+    if(find(_userWidgets, {'name': widget.name, 'type': 'sidebar'})) {
+        _match.push(widget);
+    }
+}
 
-    delete widget.slug;
-    delete widget.options;
-    delete widget.title;
+let _routes = [];
 
-    return widget;
-});
+let temp = {};
+for(let widget of _match) {
+    temp = {};
+    temp.path = '/' + widget.slug;
+    temp.component = () => import(`../widgets/${widget.name}/${widget.name}`);
+    temp.meta = {
+        name: widget.title,
+        slug: widget.slug,
+        icon: widget.icons.flat,
+    };
 
-export default _widgets;
+    _routes.push(temp);
+}
+
+export default _routes;

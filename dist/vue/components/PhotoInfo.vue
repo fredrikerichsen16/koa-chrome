@@ -1,14 +1,19 @@
 <script>
-import storage from 'local-storage';
+
+import { mapState, mapMutations } from 'vuex';
 
 export default {
     name: 'PhotoInfo',
 
     methods: {
+        ...mapMutations(['OVERWRITE_PAGE']),
+
         switchBG() {
-            let $user = storage.get('user');
-            $user.backgrounds.nextShuffle = 0;
-            storage.set('user', $user);
+            this.OVERWRITE_PAGE({
+                backgrounds: {
+                    nextShuffle: 0
+                }
+            });
         }
     }
 }

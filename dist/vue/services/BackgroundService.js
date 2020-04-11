@@ -1,4 +1,6 @@
 import storage from 'local-storage';
+import cloneDeep from 'lodash.clonedeep';
+
 
 class BackgroundService {
 
@@ -19,17 +21,18 @@ class BackgroundService {
      * Return:
      *   object
      */
-    retrieve(user) {
-        this.user = user;
+    retrieve(page, overwriter) {
+        this.page = cloneDeep(page);
+        this.overwriter = overwriter;
 
         return new Promise((resolve, reject) => {
-            let b = this.user.backgrounds;
+            let b = this.page.backgrounds;
 
             if(this.timeToUpdate())
             {
                 this.getImagesFromAPI()
                     .then((data) => {
-                        user.backgrounds = {
+                        b = {
                             nextRefresh: this.now + (1000 * 60 * 60 * 24), // refresh all saved images with a new API call
                             nextShuffle: this.nextShuffleTime,
                             images: data,
@@ -37,10 +40,9 @@ class BackgroundService {
                             active: data[0],
                         };
 
-                        this.user = user;
-                        storage.set('user', user);
+                        this.overwriter({ backgrounds: b });
 
-                        resolve(this.loadHTML(this.user.backgrounds.active));
+                        resolve(this.loadHTML(b.active));
                     })
                     .catch((error) => {
                         reject(error);
@@ -49,7 +51,7 @@ class BackgroundService {
             else
             {
                 this.shuffle();
-                resolve(this.loadHTML(this.user.backgrounds.active));
+                resolve(this.loadHTML(b.active));
             }
         });
     }
@@ -61,9 +63,10 @@ class BackgroundService {
     }
 
     timeToUpdate() {
-        let b = this.user.backgrounds;
+        let b = this.page.backgrounds;
 
-        return !this.user.hasOwnProperty('backgrounds')
+        return !this.page.hasOwnProperty('backgrounds')
+            || b === {}
             || b.nextRefresh < this.now
             || b.nextShuffle < this.now && ((b.images.length - 1) <= b.id);
     }
@@ -101,7 +104,7 @@ class BackgroundService {
     }
 
     shuffle() {
-        let b = this.user.backgrounds;
+        let b = this.page.backgrounds;
 
         if(b.nextShuffle < this.now) {
             b.id++;
@@ -109,7 +112,7 @@ class BackgroundService {
             b.nextShuffle = this.nextShuffleTime; // - load a new pic every time during development.
         }
 
-        storage.set('user', this.user);
+        this.overwriter({ backgrounds: this.page.backgrounds });
     }
 }
 

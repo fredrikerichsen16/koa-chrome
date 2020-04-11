@@ -1,25 +1,16 @@
 <script>
 import storage from 'local-storage';
+import { mapState, mapMutations } from "vuex";
 
 export default {
     name: 'MiddleComponent',
 
-    data() {
-        let user = storage.get('user');
-        let slide;
+    computed: {
+        ...mapState(['page'])
+    },
 
-        if(user.hasOwnProperty('middleComponent') && user.middleComponent.hasOwnProperty('slide') && typeof user.middleComponent.slide === "number")
-        {
-            slide = user.middleComponent.slide;
-        }
-        else
-        {
-            slide = 0;
-            user.middleComponent = {
-                slide: 0
-            };
-            storage.set('user', user);
-        }
+    data() {
+        let slide = this.$store.state.page.middleComponentSlide || 0;
 
         let components = [
             {
@@ -35,24 +26,26 @@ export default {
                 loaded: false,
             },
         ];
-
         components[slide].loaded = true;
 
+        let nSlides = components.length;
+
         return {
-            nSlides: components.length,
+            nSlides,
             slide,
             components,
-            user,
         };
     },
 
     components: {
         SearchBar: () => import('./SearchBar.vue'),
         SavedWebsites: () => import('./SavedWebsites.vue'),
-        WeatherToday: () => import('./WeatherToday.vue'),
+        WeatherToday: () => import('./WeatherToday.vue')
     },
 
     methods: {
+        ...mapMutations(['OVERWRITE_PAGE']),
+
         /**
          * Switch middle component
          * if n = -1: go one back
@@ -83,17 +76,16 @@ export default {
                 this.slide = n;
             }
 
-            this.user.middleComponent.slide = this.slide;
-            storage.set('user', this.user);
+            this.OVERWRITE_PAGE({
+                'middleComponentSlide': this.slide
+            });
 
             this.components[this.slide].loaded = true;
         }
     },
 
     mounted() {
-        let self = this;
-
-        window.addEventListener('keydown', function(e) {
+        window.addEventListener('keydown', (e) => {
             let inputs = document.querySelectorAll('input[type="text"]');
             let magicSearchInput = document.getElementById('magic_search_input');
 
@@ -108,11 +100,11 @@ export default {
             }
 
             if(e.which === 39) {
-                self.next();
+                this.next();
             }
 
             if(e.which === 37) {
-                self.next(-1);
+                this.next(-1);
             }
         });
     }

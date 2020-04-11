@@ -8,6 +8,4 @@ authorize(function(error, user) {
     }
 
     storage.set('user', user);
-
-    console.log(user);
 });

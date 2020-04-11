@@ -4,7 +4,7 @@
 
 <script>
     import BackgroundService from "../services/BackgroundService";
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
 
     export default {
         name: 'SearchBar',
@@ -13,17 +13,19 @@
             return {};
         },
 
-        methods: {},
+        methods: {
+            ...mapMutations(['OVERWRITE_PAGE'])
+        },
 
         computed: {
-            ...mapState(['user'])
+            ...mapState(['page'])
         },
 
         mounted() {
             /**
              * TODO: Pass 'document' into .retrieve and do the bg.onload etc. inside the service.
              */
-            BackgroundService.retrieve(this.user)
+            BackgroundService.retrieve(this.page, this.OVERWRITE_PAGE)
                 .then((bg) => {
                     bg.onload = function() {
                         document.getElementById('background').style.backgroundImage = `url(${bg.src})`;

@@ -3,36 +3,40 @@
     "name": "NewsDigest",
     "title": "News Digest",
     "slug": "news-digest",
-    "options": {
-      "sidebar": true,
-      "icon": "news-digest-widget-icon.svg"
+    "type": ["sidebar"],
+    "icons": {
+      "flat": "news-digest-widget-icon.svg",
+      "color": null
     }
   },
   {
     "name": "Todo",
     "title": "Todo",
     "slug": "todo",
-    "options": {
-      "sidebar": true,
-      "icon": "todo-widget-icon.svg"
+    "type": ["sidebar"],
+    "icons": {
+      "flat": "todo-widget-icon.svg",
+      "color": null
     }
   },
   {
     "name": "Stocks",
     "title": "Stocks",
     "slug": "stocks",
-    "options": {
-      "sidebar": true,
-      "icon": "stocks-widget-icon.svg"
+    "type": ["sidebar", "top"],
+    "icons": {
+      "flat": "stocks-widget-icon.svg",
+      "color": null
     }
   },
   {
     "name": "Weather",
     "title": "Weather",
     "slug": "weather",
-    "options": {
-      "sidebar": true,
-      "icon": "weather-widget-icon.svg"
+    "type": ["sidebar"],
+    "icons": {
+      "flat": "weather-widget-icon.svg",
+      "color": null
     }
   }
 ]

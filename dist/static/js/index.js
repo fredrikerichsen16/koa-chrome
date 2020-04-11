@@ -13,6 +13,16 @@ if(!$user || !userValidIsh())
     })();
 }
 
+let $page = storage.get('page');
+if(!$page) {
+    $page = {
+        middleComponentSlide: 0,
+        backgrounds: {}
+    };
+
+    storage.set('page', $page);
+}
+
 // if (!$user) {
 //
 //     $user = {

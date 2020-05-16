@@ -11,7 +11,8 @@
         "https://community-neutrino-currency-conversion.p.rapidapi.com",
         "https://www.google.com",
         "bookmarks",
-        "history"
+        "history",
+        "tabs"
     ],
     "icons": {
         "16": "favicon.ico"

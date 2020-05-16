@@ -28,7 +28,7 @@
 
                 this.MINUTES = minutes;
 
-                if(this.clockFormat === '12HR')
+                if(this.clockFormat === '12hr')
                 {
                     this.AM_PM  = hours >= 12 ? 'PM' : 'AM';
                     this.HOURS = hours > 12 ? hours -= 12 : hours;
@@ -57,14 +57,17 @@
 
 <style lang="css" scoped>
 
+@import '~@static/scss/variables.scss';
+
 div#clock {
     position: absolute;
-    top: 11px;
-    left: 80px;
+    top: 20px;
+    left: 30px;
 
     font-family: $default-font;
-    color: #515151;
-    font-weight: 300;
+    font-size: 52px;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    color: white;
     text-transform: uppercase;
 }
 

@@ -7,20 +7,24 @@ import Clock from '@/components/Clock';
 import WidgetLinks from '@/components/WidgetLinks';
 import PhotoInfo from '@/components/PhotoInfo';
 import Sidebar from '@/widgets/Sidebar';
+import ContextMenu from '@/components/ContextMenu';
 
 export default {
     name: 'App',
+
     data() {
         return {};
     },
+
     components: {
         Loader,
         MiddleComponent,
         Quote,
-        Clock,
         Sidebar,
         WidgetLinks,
         PhotoInfo,
+        ContextMenu,
+        Clock,
     },
 }
 
@@ -36,6 +40,7 @@ export default {
             <WidgetLinks />
             <Quote />
             <PhotoInfo />
+            <ContextMenu />
         </div>
     </div>
 </template>

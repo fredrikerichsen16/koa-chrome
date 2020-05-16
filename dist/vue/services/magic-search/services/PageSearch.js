@@ -102,6 +102,10 @@ export default class PageSearch {
         return result;
     }
 
+    /**
+     * TODO: Make JSON file with suggested websites in a binary relation style object with streetname: [url, title]
+     * sorted alphabetically by streetname, then binary search streetname and return url.
+     */
     getSuggestedWebsite() {
         if(this.query === 'university of leiden')
         {

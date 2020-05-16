@@ -14,12 +14,14 @@
     <router-link
             v-for="(route, idx) in $router.options.routes"
             :key="idx"
-            :to="route.path">
+            :to="route.path"
+            :data-wenk="route.meta.name"
+            data-wenk-pos="top">
         <img :src="'/static/img/icons/' + route.meta.icon"
-             :alt="route.meta.name + 'Widget Icon'">
+             :alt="route.meta.name + ' Widget Icon'">
     </router-link>
 
-    <a href="#">
+    <a href="http://localhost:3002/settings">
         <img src="/static/img/icons/settings-icon.svg" alt="" />
     </a>
 </div>

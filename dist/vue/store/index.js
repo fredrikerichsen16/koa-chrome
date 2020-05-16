@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import storage from 'local-storage';
 import merge from 'lodash.merge';
 
-
 Vue.use(Vuex);
 
 const modules = {};

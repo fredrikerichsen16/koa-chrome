@@ -10,6 +10,13 @@ export default class MagicSearch {
         // this.searchers = [Calculator, Currency, Conversion];
     }
 
+    immediateSearch(query, cb) {
+        this.runSearch(query, Websites)
+            .then((result) => {
+                return cb(result);
+            });
+    }
+
     async delayedSearch(query) {
         let calculatorResult = await this.runSearch(query, Calculator);
         let conversionResult = await this.runSearch(query, Conversion);
@@ -20,13 +27,6 @@ export default class MagicSearch {
         result = result.filter(item => item);
 
         return result;
-    }
-
-    immediateSearch(query, cb) {
-        this.runSearch(query, Websites)
-            .then((result) => {
-                return cb(result);
-        });
     }
 
     async runSearch(query, Searcher) {

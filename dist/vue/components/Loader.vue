@@ -1,13 +1,9 @@
-<template>
-    <div id="overlay"></div>
-</template>
-
 <script>
     import BackgroundService from "../services/BackgroundService";
     import { mapState, mapMutations } from 'vuex';
 
     export default {
-        name: 'SearchBar',
+        name: 'Loader',
 
         data() {
             return {};
@@ -43,6 +39,10 @@
     }
 </script>
 
+<template>
+    <div id="overlay"></div>
+</template>
+
 <style lang="scss">
 #overlay {
     background: white;
@@ -54,9 +54,6 @@
     &.hide {
         opacity: 0;
         transition: .7s opacity ease;
-        /*-webkit-transition: .6s opacity ease;*/
-        /*-moz-transition: .6s opacity ease;*/
-        /*-o-transition: .6s opacity ease;*/
     }
 }
 </style>

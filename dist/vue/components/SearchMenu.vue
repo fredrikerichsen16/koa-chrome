@@ -66,6 +66,20 @@ export default {
             }
         }
     },
+
+    // TODO
+    // mounted() {
+    //     document.body.addEventListener('click', (e) => {
+    //         e.preventDefault();
+    //
+    //         console.log(e.target);
+    //
+    //         if(document.getElementById('menu').contains(e.target)) {
+    //             console.log('hie');
+    //             document.getElementById('magic_search_input').focus();
+    //         }
+    //     }, true);
+    // }
 }
 
 </script>

@@ -1,96 +1,96 @@
 <script>
-    export default {
-        components: {
-            SearchMenu: () => import('./SearchMenu.vue')
+export default {
+    components: {
+        SearchMenu: () => import('./SearchMenu.vue')
+    },
+    name: 'SearchBar',
+    data() {
+        return {
+            input: '',
+            query: '',
+            renderMenu: false,
+
+            searchSite: 'GOOGLE',
+            searchSiteOptions: [
+                {
+                    value: "GOOGLE",
+                    url: 'https://www.google.com/search?q=[]'
+                },
+                {
+                    value: "YOUTUBE",
+                    url: 'https://www.youtube.com/results?search_query=[]'
+                },
+                {
+                    value: "MAPS",
+                    url: 'https://www.google.com/maps/place/[]',
+                },
+                {
+                    value: "YAHOO"
+                },
+                {
+                    value: "AMAZON",
+                    url: 'https://www.amazon.com/s?k=[]'
+                },
+                {
+                    value: "NAVER",
+                    url: 'https://search.naver.com/search.naver?query=[]',
+                },
+                {
+                    value: "PORNHUB",
+                    url: 'https://www.pornhub.com/video/search?search=[]',
+                },
+                {
+                    value: "DUCKDUCKGO",
+                    url: 'https://duckduckgo.com/?q=[]&t=h_&ia=web',
+                },
+            ],
+        };
+    },
+    methods: {
+        search() {
+            this.query = this.input;
         },
-        name: 'SearchBar',
-        data() {
-            return {
-                input: '',
-                query: '',
-                renderMenu: false,
 
-                searchSite: 'GOOGLE',
-                searchSiteOptions: [
-                    {
-                        value: "GOOGLE",
-                        url: 'https://www.google.com/search?q=[]'
-                    },
-                    {
-                        value: "YOUTUBE",
-                        url: 'https://www.youtube.com/results?search_query=[]'
-                    },
-                    {
-                        value: "MAPS",
-                        url: 'https://www.google.com/maps/place/[]',
-                    },
-                    {
-                        value: "YAHOO"
-                    },
-                    {
-                        value: "AMAZON",
-                        url: 'https://www.amazon.com/s?k=[]'
-                    },
-                    {
-                        value: "NAVER",
-                        url: 'https://search.naver.com/search.naver?query=[]',
-                    },
-                    {
-                        value: "PORNHUB",
-                        url: 'https://www.pornhub.com/video/search?search=[]',
-                    },
-                    {
-                        value: "DUCKDUCKGO",
-                        url: 'https://duckduckgo.com/?q=[]&t=h_&ia=web',
-                    },
-                ],
-            };
-        },
-        methods: {
-            search() {
-                this.query = this.input;
-            },
-
-            focusInput() {
-                if(this.input === '') return;
-                try {
-                    this.$refs.SearchMenu.showMenu(true);
-                } catch {
-                    // This doesn't work the first time you focus on the input, because the search menu hasn't rendered
-                    // yet (because it only renders when user inputs something). Don't have to do any error handling.
-                    console.log('No problem, move on. #48932489324');
-                }
-            },
-
-            blurInput() {
-                try {
-                    this.$refs.SearchMenu.showMenu(false);
-                } catch(e) {
-                    // This doesn't work the first time you leave the input if you, haven't written anything.
-                    // Because the search menu hasn't rendered yet. Don't have to do any error handling.
-                    console.log('No problem, move on. #48534204324');
-                }
-            },
-
-            focusOnSelect() {
-                this.$refs.selectSearchSite.focus();
-            },
-
-            backToInput(e) {
-                e.preventDefault();
-                this.$refs.magicSearchInput.focus();
-            },
-
-            onFormSubmit(e) {
-                if(e) e.preventDefault();
-
-                let searchSiteObj = this.searchSiteOptions.find(e => e.value === this.searchSite) || this.searchSiteOptions[0];
-                let searchSiteUrl = searchSiteObj.url.replace('[]', this.input);
-
-                location.href = searchSiteUrl;
+        focusInput() {
+            if(this.input === '') return;
+            try {
+                this.$refs.SearchMenu.showMenu(true);
+            } catch {
+                // This doesn't work the first time you focus on the input, because the search menu hasn't rendered
+                // yet (because it only renders when user inputs something). Don't have to do any error handling.
+                console.log('No problem, move on. #48932489324');
             }
         },
-    }
+
+        blurInput() {
+            try {
+                this.$refs.SearchMenu.showMenu(false);
+            } catch(e) {
+                // This doesn't work the first time you leave the input if you, haven't written anything.
+                // Because the search menu hasn't rendered yet. Don't have to do any error handling.
+                console.log('No problem, move on. #48534204324');
+            }
+        },
+
+        focusOnSelect() {
+            this.$refs.selectSearchSite.focus();
+        },
+
+        backToInput(e) {
+            e.preventDefault();
+            this.$refs.magicSearchInput.focus();
+        },
+
+        onFormSubmit(e) {
+            if(e) e.preventDefault();
+
+            let searchSiteObj = this.searchSiteOptions.find(e => e.value === this.searchSite) || this.searchSiteOptions[0];
+            let searchSiteUrl = searchSiteObj.url.replace('[]', this.input);
+
+            location.href = searchSiteUrl;
+        }
+    },
+}
 </script>
 
 <template>

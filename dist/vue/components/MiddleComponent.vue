@@ -1,18 +1,24 @@
 <script>
-import storage from 'local-storage';
 import { mapState, mapMutations } from "vuex";
 
 export default {
     name: 'MiddleComponent',
 
     computed: {
-        ...mapState(['page'])
+        ...mapState(['page']),
     },
 
-    data() {
-        let slide = this.$store.state.page.middleComponentSlide || 0;
+    created() {
+        let components = [];
+        let widgets = this.$store.state.user.widgets;
 
-        let components = [
+        for(let widget of widgets)
+        {
+            if(widget.type !== 'semi') continue;
+            components.push({...widget, loaded: false});
+        }
+
+        let defaultComponents = [
             {
                 name: 'SearchBar',
                 loaded: false,
@@ -20,27 +26,29 @@ export default {
             {
                 name: 'SavedWebsites',
                 loaded: false,
-            },
-            {
-                name: 'WeatherToday',
-                loaded: false,
-            },
+            }
         ];
-        components[slide].loaded = true;
 
-        let nSlides = components.length;
+        this.components = defaultComponents.concat(components);
 
+        this.slide = this.$store.state.page.middleComponentSlide || 0;
+        this.components[this.slide].loaded = true;
+        this.nSlides = this.components.length;
+    },
+
+    data() {
         return {
-            nSlides,
-            slide,
-            components,
+            nSlides: 0,
+            slide: 0,
+            components: [],
         };
     },
 
     components: {
         SearchBar: () => import('./SearchBar.vue'),
         SavedWebsites: () => import('./SavedWebsites.vue'),
-        WeatherToday: () => import('./WeatherToday.vue')
+        Weather: () => import('@/widgets/Weather/semi/Weather.vue'),
+        Todo: () => import('@/widgets/Todo/semi/Todo.vue'),
     },
 
     methods: {
@@ -55,6 +63,11 @@ export default {
          * @param n - int | undefined | null
          */
         next(n) {
+            /**
+             * TODO: Perhaps first set component loaded = true first for 100ms, THEN change this.slide to that slide
+             * so that it loads a bit first and then it is show. But it's probably better to load the content inside
+             * the thing with a spinner.
+             */
             if(n === -1)
             {
                 if(this.slide === 0) {
@@ -113,24 +126,23 @@ export default {
 </script>
 
 <template>
-    <div>
 
-        <div id="middle_component">
-            <component
-                    v-for="(c, index) in components"
-                    :is="c.name"
-                    v-if="c.loaded"
-                    v-show="index === slide"
-                    :key="index"></component>
+<div>
+    <div id="middle_component">
+        <component
+                v-for="(c, index) in components"
+                :is="c.name"
+                v-if="c.loaded"
+                v-show="index === slide"
+                :key="index"></component>
 
-            <ul id="navigation_dots">
-                <li v-for="n in nSlides"
-                    :class="{selected: (n - 1) === slide}"
-                    @click="next(n - 1)"></li>
-            </ul>
-        </div>
-
+        <ul id="navigation_dots">
+            <li v-for="n in nSlides"
+                :class="{selected: (n - 1) === slide}"
+                @click="next(n - 1)"></li>
+        </ul>
     </div>
+</div>
 
 </template>
 

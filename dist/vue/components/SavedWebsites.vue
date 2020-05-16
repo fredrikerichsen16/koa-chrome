@@ -3,29 +3,28 @@
         name: 'SavedWebsites',
         data() {
             return {
-                websites: []
-            };
+                sites: []
+            }
         },
-        mounted() {
-            const URL = 'https://www.facebook.com/';
-            this.websites = [
-                {
-                    name: 'Facebook',
-                    url: 'https://www.facebook.com/'
-                },
-                {
-                    name: 'Reddit',
-                    url: 'https://www.reddit.com/'
-                },
-                {
-                    name: 'Instagram',
-                    url: 'https://www.instagram.com/'
-                },
-                {
-                    name: 'StackOverflow',
-                    url: 'https://www.stackoverflow.com/'
-                },
-            ];
+        created() {
+            let self = this;
+
+            var data = null;
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function() {
+                if (this.readyState === this.DONE) {
+                    if(this.status == 200)
+                    {
+                        self.sites = JSON.parse(this.responseText);
+                        console.log(self.sites);
+                    }
+                }
+            });
+
+            xhr.open("GET", "http://localhost:3002/api/get-saved-websites");
+            xhr.send(data);
         }
     }
 </script>
@@ -34,107 +33,12 @@
 
 <div id="saved_websites">
     <div class="list">
-        <a href="https://www.facebook.com">
+        <a v-for="site of sites" :href="site.url">
             <div>
-                <img src="/static/img/website-logos/facebook.svg">
+                <img v-if="site.icon" :src="'/static/img/website-logos/' + site.icon">
+                <span v-if="site.letter">{{ site.letter }}</span>
             </div>
-            <p>Facebook</p>
-        </a>
-        <a href="https://www.google.com">
-            <div>
-                <img src="/static/img/website-logos/google.svg">
-            </div>
-            <p>Google</p>
-        </a>
-        <a href="https://www.netflix.com">
-            <div>
-                <img src="/static/img/website-logos/netflix.svg">
-            </div>
-            <p>Netflix</p>
-        </a>
-        <a href="https://www.instagram.com">
-            <div>
-                <img src="/static/img/website-logos/instagram.svg">
-            </div>
-            <p>Instagram</p>
-        </a>
-        <a href="https://www.reddit.com">
-            <div>
-                <img src="/static/img/website-logos/reddit.svg">
-            </div>
-            <p>Reddit</p>
-        </a>
-        <a href="https://www.messenger.com">
-            <div>
-                <img src="/static/img/website-logos/facebook-messenger.svg">
-            </div>
-            <p>Messenger</p>
-        </a>
-        <a href="https://www.stackoverflow.com">
-            <div>
-                <span>S</span>
-            </div>
-            <p>StackOverflow</p>
-        </a>
-        <a href="https://www.whatsapp.com">
-            <div>
-                <img src="/static/img/website-logos/whatsapp.svg">
-            </div>
-            <p>WhatsApp</p>
-        </a>
-        <a href="https://www.vuejs.org">
-            <div>
-                <img src="/static/img/website-logos/vue.svg">
-            </div>
-            <p>Vue</p>
-        </a>
-        <a href="https://www.vg.no">
-            <div>
-                <span>V</span>
-            </div>
-            <p>VG</p>
-        </a>
-        <a href="https://www.dagbladet.no">
-            <div>
-                <span>D</span>
-            </div>
-            <p>Dagbladet</p>
-        </a>
-        <a href="https://www.drive.google.com">
-            <div>
-                <img src="/static/img/website-logos/google-drive.svg">
-            </div>
-            <p>Google Drive</p>
-        </a>
-        <a href="https://www.dropbox.com">
-            <div>
-                <img src="/static/img/website-logos/dropbox.svg">
-            </div>
-            <p>Dropbox</p>
-        </a>
-        <a href="https://www.slack.com">
-            <div>
-                <img src="/static/img/website-logos/slack.svg">
-            </div>
-            <p>Slack</p>
-        </a>
-        <a href="https://www.twitter.com">
-            <div>
-                <img src="/static/img/website-logos/twitter.svg">
-            </div>
-            <p>Twitter</p>
-        </a>
-        <a href="https://www.bbc.com">
-            <div>
-                <img src="/static/img/website-logos/bbc.svg">
-            </div>
-            <p>BBC</p>
-        </a>
-        <a href="https://www.amazon.com">
-            <div>
-                <img src="/static/img/website-logos/amazon.svg">
-            </div>
-            <p>Amazon</p>
+            <p>{{ site.title }}</p>
         </a>
     </div>
 </div>

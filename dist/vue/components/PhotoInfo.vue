@@ -5,6 +5,12 @@ import { mapState, mapMutations } from 'vuex';
 export default {
     name: 'PhotoInfo',
 
+    computed: {
+        photo() {
+            return this.$store.state.page.backgrounds.active;
+        }
+    },
+
     methods: {
         ...mapMutations(['OVERWRITE_PAGE']),
 
@@ -21,8 +27,8 @@ export default {
 
 <template>
     <div id="photo_info">
-        <p @click="switchBG">Maui, Hawaii</p>
-        <a href="https://www.instagram.com/jarvisphoto/">Photo by Braden Jarvis</a>
+        <p @click="switchBG">{{ photo.meta.location }}</p>
+        <a :href="photo.meta.photographerSource">Photo by {{ photo.meta.photographer }}</a>
     </div>
 </template>
 

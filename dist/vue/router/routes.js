@@ -9,7 +9,7 @@ let _userWidgets = storage.get('user').widgets;
 let _match = [];
 
 for(let widget of _widgets) {
-    if(find(_userWidgets, {'name': widget.name, 'type': 'sidebar'})) {
+    if(find(_userWidgets, {'name': widget.name, 'type': 'full'})) {
         _match.push(widget);
     }
 }
@@ -20,7 +20,7 @@ let temp = {};
 for(let widget of _match) {
     temp = {};
     temp.path = '/' + widget.slug;
-    temp.component = () => import(`../widgets/${widget.name}/${widget.name}`);
+    temp.component = () => import(`../widgets/${widget.name}/full/${widget.name}`);
     temp.meta = {
         name: widget.title,
         slug: widget.slug,

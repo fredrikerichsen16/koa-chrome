@@ -1,6 +1,4 @@
-import storage from 'local-storage';
 import cloneDeep from 'lodash.clonedeep';
-
 
 class BackgroundService {
 
@@ -32,6 +30,7 @@ class BackgroundService {
             {
                 this.getImagesFromAPI()
                     .then((data) => {
+                        console.log(data);
                         b = {
                             nextRefresh: this.now + (1000 * 60 * 60 * 24), // refresh all saved images with a new API call
                             nextShuffle: this.nextShuffleTime,
@@ -63,10 +62,9 @@ class BackgroundService {
     }
 
     timeToUpdate() {
-        let b = this.page.backgrounds;
+        let b = this.page.backgrounds || {};
 
-        return !this.page.hasOwnProperty('backgrounds')
-            || b === {}
+        return Object.keys(b).length === 0
             || b.nextRefresh < this.now
             || b.nextShuffle < this.now && ((b.images.length - 1) <= b.id);
     }

@@ -36,10 +36,6 @@ export default {
                     url: 'https://search.naver.com/search.naver?query=[]',
                 },
                 {
-                    value: "PORNHUB",
-                    url: 'https://www.pornhub.com/video/search?search=[]',
-                },
-                {
                     value: "DUCKDUCKGO",
                     url: 'https://duckduckgo.com/?q=[]&t=h_&ia=web',
                 },

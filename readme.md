@@ -18,3 +18,5 @@ Fordi dette skulle være en startside som åpnes hyppig måtte jeg ta hensyn til
 2. Brukte Koa på backend, et lightweight rammeverk
 
 Skulle gjerne inkludert bilder/demo/instruksjoner for å åpne denne nettsiden. Men, ettersom det er et 3 år gammelt prosjekt er alle dependency-ene utdatert, så det er vanskelig å få til.
+
+Se også: https://github.com/fredrikerichsen16/hornet
